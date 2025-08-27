@@ -1,0 +1,42 @@
+{% extends 'crypto_app/base.html' %}
+
+{% block title %}Strona główna - Crypto Base{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Witaj w Crypto Base - twoja baza inwestycyjna!</h1>
+            <p class="lead">Zarządzaj swoimi inwestycjami w kryptowaluty</p>
+
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Kryptowaluty</h5>
+                            <p class="card-text">Przeglądaj dostępne kryptowaluty</p>
+                            <a href="{% url 'cryptocurrencies' %}" class="btn btn-primary">Zobacz</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Transakcje</h5>
+                            <p class="card-text">Historia twoich transakcji</p>
+                            <a href="{% url 'transactions' %}" class="btn btn-primary">Zobacz</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Portfel</h5>
+                            <p class="card-text">Twój obecny portfel</p>
+                            <a href="{% url 'portfolio' %}" class="btn btn-primary">Zobacz</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

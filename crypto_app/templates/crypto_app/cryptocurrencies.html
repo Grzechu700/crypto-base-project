@@ -1,0 +1,35 @@
+{% extends 'crypto_app/base.html' %}
+
+{% block title %}Kryptowaluty - Crypto Base{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Lista Kryptowalut</h1>
+
+            {% if cryptocurrencies %}
+                <div class="row">
+                    {% for crypto in cryptocurrencies %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ crypto.name }}</h5>
+                                    <p class="card-text">
+                                        <strong>Symbol:</strong> {{ crypto.symbol }}<br>
+                                        <strong>Opis:</strong> {{ crypto.description|truncatewords:15 }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <h4>Brak kryptowalut w bazie</h4>
+                    <p>Przejdź do panelu administratora aby dodać pierwszą kryptowalutę!</p>
+                    <a href="/admin/" class="btn btn-primary">Panel Admin</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
