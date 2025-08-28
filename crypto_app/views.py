@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from .models import Cryptocurrency, Transaction, Portfolio, MarketData
 
 
@@ -15,10 +14,6 @@ def cryptocurrencies(request):
 
 def transactions(request):
     transactions = Transaction.objects.select_related("user", "cryptocurrency").all()
-
-    for transaction in transactions:
-        total_value = transaction.amount * transaction.price
-        transaction.total_value = total_value
 
     return render(request,
                   "crypto_app/transactions.html",
@@ -47,9 +42,13 @@ def portfolio(request):
                 portfolio_item.price = usd_market_data.price
                 portfolio_item.currency = "USD"
             else:
-                portfolio_item.price = 100
-                portfolio_item.currency = "USD"
+                portfolio_item.price = None
+                portfolio_item.currency = "N/A"
+                portfolio_item.total_value = None
+                portfolio_item.has_price_data = False
 
-        portfolio_item.total_value = portfolio_item.amount * portfolio_item.price
+
+        if portfolio_item.price is not None:
+            portfolio_item.total_value = portfolio_item.amount * portfolio_item.price
 
     return render(request, "crypto_app/portfolio.html", {"portfolio": portfolio})
