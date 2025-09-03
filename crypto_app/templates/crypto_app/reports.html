@@ -1,0 +1,97 @@
+{% extends 'crypto_app/base.html' %}
+
+{% block title %}Raporty - Crypto Base{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Moje Raporty Trading</h1>
+            <p class="lead">Analiza Twoich transakcji i zysków/strat</p>
+
+            <div class="row">
+                <!-- Statystyki transakcji -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5>📊 Statystyki Transakcji</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <h3 class="text-success">{{ buy_count }}</h3>
+                                    <p>Transakcje Kupna</p>
+                                </div>
+                                <div class="col-6">
+                                    <h3 class="text-danger">{{ sell_count }}</h3>
+                                    <p>Transakcje Sprzedaży</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analiza finansowa -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h5>💰 Analiza Finansowa</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Wydano na zakupy:</strong>
+                                <span class="text-danger">{{ total_spent|floatformat:2 }} PLN</span>
+                            </p>
+                            <p><strong>Zarobiono ze sprzedaży:</strong>
+                                <span class="text-success">{{ total_earned|floatformat:2 }} PLN</span>
+                            </p>
+                            <hr>
+                            <p><strong>Zysk/Strata ogółem:</strong></p>
+                            <h3 class="{% if profit_loss > 0 %}text-success{% else %}text-danger{% endif %}">
+                                {% if profit_loss > 0 %}📈 +{% else %}📉 {% endif %}{{ profit_loss|floatformat:2 }} PLN
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interpretacja wyników -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="alert {% if profit_loss > 0 %}alert-success{% elif profit_loss < 0 %}alert-danger{% else %}alert-warning{% endif %}">
+                        <h5>
+                            {% if profit_loss > 0 %}
+                                🎉 Gratulacje! Jesteś na plusie!
+                            {% elif profit_loss < 0 %}
+                                📉 Aktualnie jesteś na minusie
+                            {% else %}
+                                ⚖️ Jesteś na zero - bez zysku i straty
+                            {% endif %}
+                        </h5>
+                        <p>
+                            {% if profit_loss > 0 %}
+                                Twoje inwestycje przynoszą zyski. Kontynuuj przemyślaną strategię!
+                            {% elif profit_loss < 0 %}
+                                To naturalna część inwestowania. Przeanalizuj swoje decyzje i dostosuj strategię.
+                            {% else %}
+                                Twoje transakcje się równoważą. To dobry moment na przeanalizowanie strategii.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Linki do innych sekcji -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5>Przydatne linki</h5>
+                            <a href="{% url 'transactions' %}" class="btn btn-primary me-2">Zobacz wszystkie transakcje</a>
+                            <a href="{% url 'cryptocurrencies' %}" class="btn btn-success me-2">Rekomendacje Trading</a>
+                            <a href="{% url 'portfolio' %}" class="btn btn-info">Mój Portfel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

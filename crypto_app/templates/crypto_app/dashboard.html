@@ -1,0 +1,48 @@
+{% extends 'crypto_app/base.html' %}
+
+{% block title %}Dashboard - Crypto Base{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Dashboard użytkownika: {{ user.username }}</h1>
+
+            {% if dashboard %}
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Bilans z ostatnich 5 transakcji</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Kryptowaluta</th>
+                                    <th>Bilans finansowy</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for symbol, balance in dashboard.items %}
+                                    <tr>
+                                        <td><strong>{{ symbol }}</strong></td>
+                                        <td>
+                                                <span class="{% if balance > 0 %}text-success{% else %}text-danger{% endif %}">
+                                                    {{ balance|floatformat:2 }} PLN
+                                                </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <h4>Brak transakcji</h4>
+                    <p>Wykonaj pierwsze transakcje, aby zobaczyć dashboard!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
