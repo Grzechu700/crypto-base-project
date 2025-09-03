@@ -1,0 +1,59 @@
+{% extends 'crypto_app/base.html' %}
+
+{% block title %}Portfolio - Crypto Base{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Portfolio użytkowników</h1>
+
+            {% if portfolio %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>Użytkownik</th>
+                            <th>Kryptowaluta</th>
+                            <th>Ilość</th>
+                            <th>Aktualna cena</th>
+                            <th>Wartość</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in portfolio %}
+                            <tr>
+                                <td>{{ item.user.username }}</td>
+                                <td>
+                                    <strong>{{ item.cryptocurrency.symbol }}</strong>
+                                    <br><small>{{ item.cryptocurrency.name }}</small>
+                                </td>
+                                <td>{{ item.amount }}</td>
+                                <td>
+                                    {% if item.price %}
+                                        {{ item.price|floatformat:2 }} {{ item.currency }}
+                                    {% else %}
+                                        <span class="text-warning">⚠️ Brak danych cenowych</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if item.total_value %}
+                                        <strong class="text-success">{{ item.total_value|floatformat:2 }} {{ item.currency }}</strong>
+                                    {% else %}
+                                        <span class="text-muted">N/A</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <h4>Brak pozycji w portfolio</h4>
+                    <p>Przejdź do panelu administratora aby dodać pozycje w portfolio!</p>
+                    <a href="/admin/" class="btn btn-primary">Panel Admin</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
