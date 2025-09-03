@@ -5,23 +5,40 @@
 {% block content %}
     <div class="row">
         <div class="col-12">
-            <h1>Lista Kryptowalut</h1>
+            <h1>Lista Kryptowalut z Rekomendacjami Trading</h1>
 
             {% if cryptocurrencies %}
-                <div class="row">
-                    {% for crypto in cryptocurrencies %}
-                        <div class="col-md-4 mb-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ crypto.name }}</h5>
-                                    <p class="card-text">
-                                        <strong>Symbol:</strong> {{ crypto.symbol }}<br>
-                                        <strong>Opis:</strong> {{ crypto.description|truncatewords:15 }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>Nazwa</th>
+                            <th>Symbol</th>
+                            <th>Opis</th>
+                            <th>Rekomendacja Trading</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for crypto in cryptocurrencies %}
+                            <tr>
+                                <td><strong>{{ crypto.name }}</strong></td>
+                                <td><span class="badge bg-secondary">{{ crypto.symbol }}</span></td>
+                                <td>{{ crypto.description|truncatewords:10 }}</td>
+                                <td>
+                                    {% if crypto.trading_recommendation == 'Buy' %}
+                                        <span class="badge bg-success fs-6">🚀 KUPUJ</span>
+                                    {% elif crypto.trading_recommendation == 'Sell' %}
+                                        <span class="badge bg-danger fs-6">💰 SPRZEDAJ</span>
+                                    {% elif crypto.trading_recommendation == 'Hold' %}
+                                        <span class="badge bg-warning fs-6">⏸️ CZEKAJ</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary fs-6">📊 {{ crypto.trading_recommendation }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             {% else %}
                 <div class="alert alert-info">
@@ -30,6 +47,14 @@
                     <a href="/admin/" class="btn btn-primary">Panel Admin</a>
                 </div>
             {% endif %}
+
+            <div class="alert alert-info mt-4">
+                <h5>ℹ️ Jak działają rekomendacje?</h5>
+                <p><strong>🚀 KUPUJ:</strong> Cena spadła o więcej niż 5% względem średniej z 7 dni</p>
+                <p><strong>💰 SPRZEDAJ:</strong> Cena wzrosła o więcej niż 5% względem średniej z 7 dni</p>
+                <p><strong>⏸️ CZEKAJ:</strong> Cena stabilna (zmiana między -5% a +5%)</p>
+                <p><strong>📊 Out of data:</strong> Za mało danych historycznych (potrzeba 7 dni)</p>
+            </div>
         </div>
     </div>
 {% endblock %}

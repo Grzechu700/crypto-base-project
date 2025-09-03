@@ -6,6 +6,30 @@
     <div class="row">
         <div class="col-12">
             <h1>Historia Transakcji</h1>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5>Filtry</h5>
+                    <form method="GET">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <select name="type" class="form-select">
+                                    <option value="">Wszystkie typy</option>
+                                    <option value="BUY" {% if request.GET.type == 'BUY' %}selected{% endif %}>Kupno</option>
+                                    <option value="SELL" {% if request.GET.type == 'SELL' %}selected{% endif %}>Sprzedaż</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="crypto" class="form-control" placeholder="Szukaj kryptowaluty..."
+                                       value="{{ request.GET.crypto }}">
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary">Filtruj</button>
+                                <a href="{% url 'transactions' %}" class="btn btn-secondary">Wyczyść</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             {% if transactions %}
                 <div class="table-responsive">
@@ -24,14 +48,14 @@
                         <tbody>
                         {% for transaction in transactions %}
                             <tr>
-                                <td>{{ transaction.date|date:"d.m.Y H:i" }}</td>
+                                <td>{{ transaction.created_at|date:"d.m.Y H:i" }}</td>
                                 <td>{{ transaction.user.username }}</td>
                                 <td>
                                     <strong>{{ transaction.cryptocurrency.symbol }}</strong>
                                     <br><small>{{ transaction.cryptocurrency.name }}</small>
                                 </td>
                                 <td>
-                                        <span class="badge {% if transaction.type == 'Purchase' %}bg-success{% else %}bg-danger{% endif %}">
+                                        <span class="badge {% if transaction.type == 'BUY' %}bg-success{% else %}bg-danger{% endif %}">
                                             {{ transaction.get_type_display }}
                                         </span>
                                 </td>
@@ -46,7 +70,7 @@
             {% else %}
                 <div class="alert alert-info">
                     <h4>Brak transakcji</h4>
-                    <p>Przejdź do panelu administratora aby dodać pierwszą transakcję!</p>
+                    <p>Przejdź do panelu administratora, aby dodać pierwszą transakcję!</p>
                     <a href="/admin/" class="btn btn-primary">Panel Admin</a>
                 </div>
             {% endif %}

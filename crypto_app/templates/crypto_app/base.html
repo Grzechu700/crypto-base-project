@@ -19,6 +19,9 @@
                     <a class="nav-link" href="{% url 'index' %}">Strona główna</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'cryptocurrencies' %}">Kryptowaluty</a>
                 </li>
                 <li class="nav-item">
@@ -30,11 +33,18 @@
             </ul>
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <span class="navbar-text">Witaj, {{ user.username }}!</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Wyloguj</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            👤 {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'dashboard' %}">📊 Dashboard</a></li>
+                            <li><a class="dropdown-item" href="{% url 'reports' %}">📈 Moje Raporty</a></li>
+                            <li><a class="dropdown-item" href="{% url 'portfolio' %}">💼 Portfel</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">⚙️ Ustawienia</a></li>
+                            <li><a class="dropdown-item" href="#">🚪 Wyloguj</a></li>
+                        </ul>
                     </li>
                 {% else %}
                     <li class="nav-item">
